@@ -1,8 +1,6 @@
-package com.eureka
+package com.eureka.ctfp.chapter1
 
-import com.eureka.ctfp.chapter1.Function1
 import com.eureka.ctfp.chapter1.Prelude.id
-import com.eureka.ctfp.chapter1.compose
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 import org.assertj.core.api.Assertions.assertThat
