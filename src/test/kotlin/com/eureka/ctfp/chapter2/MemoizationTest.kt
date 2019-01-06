@@ -5,10 +5,12 @@ import org.junit.Test
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
+const val SLEEP_MILLIS: Long = 50
+
 class MemoizationTest {
 
     private val longComputation = { i: Int ->
-        TimeUnit.SECONDS.sleep(1)
+        TimeUnit.MILLISECONDS.sleep(SLEEP_MILLIS)
         i * 2
     }
 
@@ -17,19 +19,15 @@ class MemoizationTest {
         val longComputationMemoized = longComputation.memoize()
 
         val nonMemoizedTime = measureTimeMillis {
-            longComputation(1)
-            longComputation(1)
-            longComputation(1)
+            (1..5).forEach { longComputation(1) }
         }
 
         val memoizedTime = measureTimeMillis {
-            longComputationMemoized(1)
-            longComputationMemoized(1)
-            longComputationMemoized(1)
+            (1..100).forEach { longComputationMemoized(1) }
         }
 
-        assertThat(nonMemoizedTime).isGreaterThanOrEqualTo(3000)
-        assertThat(memoizedTime).isLessThan(1100)
+        assertThat(nonMemoizedTime).isGreaterThanOrEqualTo(5 * SLEEP_MILLIS)
+        assertThat(memoizedTime).isLessThan((1.1 * SLEEP_MILLIS).toLong())
         assertThat(longComputation(1)).isEqualTo(longComputationMemoized(1))
     }
 }
