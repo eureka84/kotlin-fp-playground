@@ -5,7 +5,7 @@ import org.junit.Test
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
-const val SLEEP_MILLIS: Long = 50
+const val SLEEP_MILLIS: Long = 400
 
 class MemoizationTest {
 
