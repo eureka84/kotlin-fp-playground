@@ -1,7 +1,6 @@
 package com.eureka
 
 import arrow.core.Predicate
-import arrow.data.ListK
 import arrow.typeclasses.Semigroup
 
 
