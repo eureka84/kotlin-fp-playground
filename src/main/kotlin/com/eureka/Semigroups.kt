@@ -1,6 +1,7 @@
 package com.eureka
 
 import arrow.core.Predicate
+import arrow.data.ListK
 import arrow.typeclasses.Semigroup
 
 
@@ -20,12 +21,22 @@ class PredicateK {
     companion object {
         fun <T> semigroup(s: Semigroup<Boolean>): Semigroup<Predicate<T>> =
             object : Semigroup<Predicate<T>> {
-                override fun Predicate<T>.combine(other: Predicate<T>): Predicate<T> = { t: T ->
+                override fun Predicate<T>.combine(b: Predicate<T>): Predicate<T> = { t: T ->
                     val originalPredicate = this
                     s.run {
-                        originalPredicate(t).combine(other(t))
+                        originalPredicate(t).combine(b(t))
                     }
                 }
             }
     }
 }
+
+fun <T> ListK<T>.reduce(s: Semigroup<T>): T {
+    val l = this
+    return s.run {
+        l.reduce { a, e -> a.combine(e) }
+    }
+}
+
+fun <T> all() = PredicateK.semigroup<T>(Boolean.andSemiGroup())
+fun <T> any() = PredicateK.semigroup<T>(Boolean.orSemiGroup())

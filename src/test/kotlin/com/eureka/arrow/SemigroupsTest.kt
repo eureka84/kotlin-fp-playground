@@ -1,11 +1,10 @@
 package com.eureka.arrow
 
 import arrow.core.Predicate
+import arrow.data.k
 import arrow.instances.semigroup
 import arrow.typeclasses.Semigroup
-import com.eureka.PredicateK
-import com.eureka.andSemiGroup
-import com.eureka.orSemiGroup
+import com.eureka.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.test.assertFalse
@@ -37,13 +36,25 @@ class SemigroupsTest {
         }
     }
 
+    private val isGreaterThan3: Predicate<Int> = { x: Int -> x > 3 }
+    private val isEven: Predicate<Int> = { x: Int -> x % 2 == 0 }
+
     @Test
     fun predicates() {
-        val isGreaterThan3: Predicate<Int> = { x: Int -> x > 3 }
-        val isEven: Predicate<Int> = { x: Int -> x % 2 == 0 }
-        val semigroup: Semigroup<Predicate<Int>> = PredicateK.semigroup(Boolean.andSemiGroup())
-        semigroup.run {
+        val semiGroup: Semigroup<Predicate<Int>> = PredicateK.semigroup(Boolean.andSemiGroup())
+        semiGroup.run {
             assertTrue(isGreaterThan3.combine(isEven)(4))
         }
+    }
+
+    @Test
+    fun `list reduce`() {
+        val predicates = listOf(isEven, isGreaterThan3)
+        val intersection = predicates.k().reduce(all())
+        val union = predicates.k().reduce(any())
+
+        assertTrue(intersection(4))
+        assertFalse(intersection(5))
+        assertTrue(union(5))
     }
 }
