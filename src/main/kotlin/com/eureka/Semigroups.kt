@@ -31,7 +31,7 @@ class PredicateK {
     }
 }
 
-fun <T> ListK<T>.reduce(s: Semigroup<T>): T {
+fun <T> List<T>.reduce(s: Semigroup<T>): T {
     val l = this
     return s.run {
         l.reduce { a, e -> a.combine(e) }
@@ -40,3 +40,17 @@ fun <T> ListK<T>.reduce(s: Semigroup<T>): T {
 
 fun <T> all() = PredicateK.semigroup<T>(Boolean.andSemiGroup())
 fun <T> any() = PredicateK.semigroup<T>(Boolean.orSemiGroup())
+
+fun <T> List<T>.all(p: Predicate<T>): Boolean {
+    val l = this
+    return Boolean.andSemiGroup().run {
+        l.fold(true) { a, e -> a.combine(p(e)) }
+    }
+}
+
+fun <T> List<T>.any(p: Predicate<T>): Boolean {
+    val l = this
+    return Boolean.orSemiGroup().run {
+        l.fold(false) { a, e -> a.combine(p(e)) }
+    }
+}

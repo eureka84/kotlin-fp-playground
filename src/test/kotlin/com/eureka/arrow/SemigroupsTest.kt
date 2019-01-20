@@ -51,10 +51,22 @@ class SemigroupsTest {
     fun `list reduce`() {
         val predicates = listOf(isEven, isGreaterThan3)
         val intersection = predicates.k().reduce(all())
-        val union = predicates.k().reduce(any())
+        val union = predicates.reduce(any())
 
         assertTrue(intersection(4))
         assertFalse(intersection(5))
         assertTrue(union(5))
+    }
+
+    @Test
+    fun `list any`() {
+        assertTrue(listOf(1,2,3).any(isEven))
+        assertFalse(listOf(1,2,3).any(isGreaterThan3))
+    }
+
+    @Test
+    fun `list all`() {
+        assertTrue(listOf(2, 4, 6).all(isEven))
+        assertFalse(listOf(2, 4, 6).all(isGreaterThan3))
     }
 }
