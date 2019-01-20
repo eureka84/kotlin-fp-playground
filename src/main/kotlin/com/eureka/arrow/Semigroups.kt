@@ -1,4 +1,4 @@
-package com.eureka
+package com.eureka.arrow
 
 import arrow.core.Predicate
 import arrow.typeclasses.Semigroup

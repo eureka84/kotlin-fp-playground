@@ -4,7 +4,6 @@ import arrow.core.Predicate
 import arrow.data.k
 import arrow.instances.semigroup
 import arrow.typeclasses.Semigroup
-import com.eureka.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import kotlin.test.assertFalse
