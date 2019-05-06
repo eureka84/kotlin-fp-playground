@@ -35,4 +35,3 @@ interface PrintableForOption<A> : Printable<Option<A>> {
 
 }
 
-

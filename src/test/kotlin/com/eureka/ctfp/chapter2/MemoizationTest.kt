@@ -19,11 +19,11 @@ class MemoizationTest {
         val longComputationMemoized = longComputation.memoize()
 
         val nonMemoizedTime = measureTimeMillis {
-            (1..5).forEach { longComputation(1) }
+            repeat(5) { longComputation(1) }
         }
 
         val memoizedTime = measureTimeMillis {
-            (1..100).forEach { longComputationMemoized(1) }
+            repeat(100) { longComputationMemoized(1) }
         }
 
         assertThat(nonMemoizedTime).isGreaterThanOrEqualTo(5 * SLEEP_MILLIS)
