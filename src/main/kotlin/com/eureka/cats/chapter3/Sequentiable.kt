@@ -1,21 +1,17 @@
 package com.eureka.cats.chapter3
 
 import arrow.Kind
-import arrow.typeclasses.Monad
+import arrow.typeclasses.Applicative
 
 interface Sequentiable<F> {
 
-    val monad: Monad<F>
+    val applicative: Applicative<F>
 
     fun <A> List<Kind<F, A>>.sequence(): Kind<F, List<A>> {
-        val initial = monad.just<List<A>>(listOf())
+        val initial = applicative.just<List<A>>(listOf())
         return this.fold(initial) { acc: Kind<F, List<A>>, curr: Kind<F, A> ->
-            monad.run {
-                acc.flatMap { list ->
-                    curr.map { el ->
-                        list + el
-                    }
-                }
+            applicative.run {
+                applicative.map(acc, curr) {(list, el) -> list + el}
             }
         }
     }

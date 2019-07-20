@@ -1,8 +1,10 @@
 package com.eureka.cats.chapter3
 
-import arrow.core.*
-import arrow.instances.EitherMonadInstance
-import arrow.typeclasses.Monad
+import arrow.core.Either
+import arrow.core.EitherPartialOf
+import arrow.core.fix
+import arrow.instances.EitherApplicativeInstance
+import arrow.typeclasses.Applicative
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -11,7 +13,7 @@ import java.math.BigDecimal
 class EitherListExtensionsTest {
 
     private val sequentialContext = object : Sequentiable<EitherPartialOf<Exception>> {
-        override val monad: Monad<EitherPartialOf<Exception>> = object : EitherMonadInstance<Exception> {}
+        override val applicative: Applicative<EitherPartialOf<Exception>> = object : EitherApplicativeInstance<Exception>{}
     }
 
     @Test
@@ -26,7 +28,7 @@ class EitherListExtensionsTest {
     @Test
     fun sequenceNonEmptyOnlyRight() {
         sequentialContext.run {
-            val sequenceResult: Either<Exception, List<String>> = listOf(
+            val sequenceResult: Either<Exception, List<String>> = listOf<Either<Exception, String>>(
                 Either.right("A"),
                 Either.right("B")
             ).sequence().fix()
@@ -39,7 +41,7 @@ class EitherListExtensionsTest {
     @Test
     fun sequenceNonEmptyWithALeft() {
         sequentialContext.run {
-            val sequenceResult: Either<Exception, List<BigDecimal>> = listOf(
+            val sequenceResult: Either<Exception, List<BigDecimal>> = listOf<Either<MyException, BigDecimal>>(
                 Either.right(BigDecimal("5")),
                 Either.left(MyException("ouch!")),
                 Either.right(BigDecimal("7"))
@@ -50,5 +52,5 @@ class EitherListExtensionsTest {
         }
     }
 
-    data class MyException(override val message: String): Exception(message)
+    data class MyException(override val message: String) : Exception(message)
 }
