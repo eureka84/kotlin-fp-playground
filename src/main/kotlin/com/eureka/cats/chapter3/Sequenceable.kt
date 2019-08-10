@@ -3,7 +3,7 @@ package com.eureka.cats.chapter3
 import arrow.Kind
 import arrow.typeclasses.Applicative
 
-interface Sequentiable<F> {
+interface Sequenceable<F> {
 
     val applicative: Applicative<F>
 

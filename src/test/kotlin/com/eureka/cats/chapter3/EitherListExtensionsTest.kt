@@ -12,7 +12,7 @@ import java.math.BigDecimal
 
 class EitherListExtensionsTest {
 
-    private val sequentialContext = object : Sequentiable<EitherPartialOf<Exception>> {
+    private val sequentialContext = object : Sequenceable<EitherPartialOf<Exception>> {
         override val applicative: Applicative<EitherPartialOf<Exception>> = object : EitherApplicativeInstance<Exception>{}
     }
 

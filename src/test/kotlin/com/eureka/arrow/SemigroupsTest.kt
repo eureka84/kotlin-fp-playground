@@ -40,7 +40,7 @@ class SemigroupsTest {
 
     @Test
     fun predicates() {
-        val semiGroup: Semigroup<Predicate<Int>> = PredicateK.semigroup(Boolean.andSemiGroup())
+        val semiGroup: Semigroup<Predicate<Int>> = PredicateK.semiGroup(Boolean.andSemiGroup())
         semiGroup.run {
             assertTrue(isGreaterThan3.combine(isEven)(4))
         }
